@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Discovery.Consul
 {
@@ -25,6 +26,23 @@ namespace Discovery.Consul
             if (splitted[1] == "public") return true;
 
             return false;
+        }
+
+        public static Dictionary<string, string> Parse(string[] tags)
+        {
+            var parsed = new Dictionary<string, string>();
+            foreach (var tag in tags)
+            {
+                if (string.IsNullOrEmpty(tag) == true) continue;
+
+                var splitted = tag.Split(new string[] { ConsulHelper.Separator }, StringSplitOptions.RemoveEmptyEntries);
+                if (splitted.Length < 2) continue;
+
+                if (parsed.ContainsKey(splitted[0]) == false)
+                    parsed.Add(splitted[0], splitted[1]);
+            }
+
+            return parsed;
         }
     }
 }

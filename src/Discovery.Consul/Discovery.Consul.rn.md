@@ -1,3 +1,6 @@
+#### 0.1.2 - 31.10.2017
+* Adds ability to unregister services by bounded context
+
 #### 0.1.1 - 31.10.2017
 * Using discovery nuget package instead of hard refference
 

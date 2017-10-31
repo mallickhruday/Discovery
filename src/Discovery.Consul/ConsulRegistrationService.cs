@@ -54,6 +54,18 @@ namespace Discovery.Consul
             AppendToConsul(serviceName, serviceName, null, DefaultCheck(httpCheckUri));
         }
 
+        public void UnRegisterServices(string boundedContext)
+        {
+            var services = client.Agent.Services().Result;
+
+            foreach (var service in services.Response)
+            {
+                var parsed = ConsulHelper.Parse(service.Value.Tags);
+                if (parsed.ContainsKey(ConsulHelper.BoundedContext) == true && parsed[ConsulHelper.BoundedContext] == boundedContext)
+                    client.Agent.ServiceDeregister(service.Key);
+            }
+        }
+
         AgentServiceCheck DefaultCheck(Uri httpCheckUri)
         {
             return new AgentServiceCheck { Interval = TimeSpan.FromMinutes(5), HTTP = httpCheckUri.ToString(), Timeout = TimeSpan.FromMinutes(1) };
@@ -92,6 +104,13 @@ namespace Discovery.Consul
                 Tags = tags,
                 Check = check
             };
+
+            var xx = client.Agent.Services().Result;
+
+            foreach (var item in xx.Response)
+            {
+                client.Agent.ServiceDeregister(item.Key);
+            }
 
             // this will clean old registrations
             var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;

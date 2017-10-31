@@ -29,7 +29,7 @@ namespace Discovery.Consul
 
             foreach (var publicService in publicServices)
             {
-                var parsed = Parse(publicService.Value);
+                var parsed = ConsulHelper.Parse(publicService.Value);
 
                 if (parsed.ContainsKey(ConsulHelper.BoundedContext) == false) continue;
                 if (parsed.ContainsKey(ConsulHelper.UpdatedAt) == false) continue;
@@ -55,24 +55,6 @@ namespace Discovery.Consul
             }
 
             return new DiscoveryReaderResponseModel(updatedAt, endpoints);
-        }
-
-
-        static Dictionary<string, string> Parse(string[] tags)
-        {
-            var parsed = new Dictionary<string, string>();
-            foreach (var tag in tags)
-            {
-                if (string.IsNullOrEmpty(tag) == true) continue;
-
-                var splitted = tag.Split(new string[] { ConsulHelper.Separator }, StringSplitOptions.RemoveEmptyEntries);
-                if (splitted.Length < 2) continue;
-
-                if (parsed.ContainsKey(splitted[0]) == false)
-                    parsed.Add(splitted[0], splitted[1]);
-            }
-
-            return parsed;
         }
     }
 }
