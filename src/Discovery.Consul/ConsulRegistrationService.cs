@@ -105,13 +105,6 @@ namespace Discovery.Consul
                 Check = check
             };
 
-            var xx = client.Agent.Services().Result;
-
-            foreach (var item in xx.Response)
-            {
-                client.Agent.ServiceDeregister(item.Key);
-            }
-
             // this will clean old registrations
             var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;
             var register = client.Agent.ServiceRegister(registration).Result;

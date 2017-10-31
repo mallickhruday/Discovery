@@ -1,3 +1,6 @@
+#### 0.1.3 - 31.10.2017
+* Fixes deleting of all uses - ops
+
 #### 0.1.2 - 31.10.2017
 * Adds ability to unregister services by bounded context
 
