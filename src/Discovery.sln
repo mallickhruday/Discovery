@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery", "Discovery\Disc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery.Consul", "Discovery.Consul\Discovery.Consul.csproj", "{F8AA66C6-FF26-4E52-BD5A-6E4DC92A7D10}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4C7B2111-5578-46B6-9955-66A8D7358F5F}"
+	ProjectSection(SolutionItems) = preProject
+		Discovery.Consul\Discovery.Consul.rn.md = Discovery.Consul\Discovery.Consul.rn.md
+		Discovery\Discovery.rn.md = Discovery\Discovery.rn.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
