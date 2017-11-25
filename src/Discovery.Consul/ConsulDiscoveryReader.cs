@@ -18,6 +18,11 @@ namespace Discovery.Consul
 
         public DiscoveryReaderResponseModel Get()
         {
+            return Get(string.Empty);
+        }
+
+        public DiscoveryReaderResponseModel Get(string boundedContext)
+        {
             long updatedAt = 0;
             var endpoints = new List<DiscoverableEndpoint>();
 
@@ -36,6 +41,9 @@ namespace Discovery.Consul
                 if (parsed.ContainsKey(ConsulHelper.IntroducedAtVersion) == false) continue;
                 if (parsed.ContainsKey(ConsulHelper.EndpointName) == false) continue;
                 if (parsed.ContainsKey(ConsulHelper.EndpointUrl) == false) continue;
+
+                if (string.IsNullOrEmpty(boundedContext) == false && parsed[ConsulHelper.BoundedContext] != boundedContext)
+                    continue;
 
                 var endpoint = endpoints.Where(x => x.Name == parsed[ConsulHelper.EndpointName] && x.Url == new Uri(parsed[ConsulHelper.EndpointUrl]) && x.BoundedContext == parsed[ConsulHelper.BoundedContext]).SingleOrDefault();
                 if (ReferenceEquals(null, endpoint) == true)
