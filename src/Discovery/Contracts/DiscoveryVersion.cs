@@ -4,6 +4,8 @@ namespace Discovery.Contracts
 {
     public class DiscoveryVersion
     {
+        DiscoveryVersion() { }
+
         public DiscoveryVersion(string introducedAtVersion, string depricatedAtVersion)
         {
             if (string.IsNullOrEmpty(introducedAtVersion) == true) throw new ArgumentNullException(nameof(introducedAtVersion));

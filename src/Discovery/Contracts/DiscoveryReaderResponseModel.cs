@@ -4,6 +4,11 @@ namespace Discovery.Contracts
 {
     public class DiscoveryReaderResponseModel
     {
+        DiscoveryReaderResponseModel()
+        {
+            Endpoints = new List<DiscoverableEndpoint>();
+        }
+
         public DiscoveryReaderResponseModel(long updatedAt, IList<DiscoverableEndpoint> endpoints)
         {
             UpdatedAt = updatedAt;

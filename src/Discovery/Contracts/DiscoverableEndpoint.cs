@@ -4,6 +4,8 @@ namespace Discovery.Contracts
 {
     public class DiscoverableEndpoint
     {
+        DiscoverableEndpoint() { }
+
         public DiscoverableEndpoint(string name, Uri uri, string boundedContext, DiscoveryVersion version)
         {
             if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException(nameof(name));
