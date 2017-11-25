@@ -34,8 +34,8 @@
       <HintPath>..\packages\Consul.0.7.2.3\lib\net45\Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Discovery, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discovery.0.1.1\lib\net45-full\Discovery.dll</HintPath>
+    <Reference Include="Discovery, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discovery.0.1.2\lib\net45-full\Discovery.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
