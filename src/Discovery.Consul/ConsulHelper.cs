@@ -5,8 +5,10 @@ namespace Discovery.Consul
 {
     public static class ConsulHelper
     {
-        public static readonly Uri ConsulUri = new Uri("http://consul.local.com:8500");
+        [Obsolete("Use DefaultConsulUriString or DefaultConsulUri(). This will be removed")]
+        public static Uri ConsulUri { get { return new Uri(DefaultConsulUriString); } }
 
+        public const string DefaultConsulUriString = "http://consul.local.com:8500";
         public const string Visability = "Visability";
         public const string BoundedContext = "BoundedContext";
         public const string UpdatedAt = "UpdatedAt";
@@ -15,6 +17,8 @@ namespace Discovery.Consul
         public const string EndpointName = "EndpointName";
         public const string EndpointUrl = "EndpointUrl";
         public const string Separator = "__";
+
+        public static Uri DefaultConsulUri { get { return new Uri(DefaultConsulUriString); } }
 
         public static bool IsPublic(string tag)
         {

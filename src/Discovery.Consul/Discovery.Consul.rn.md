@@ -1,3 +1,6 @@
+#### 0.1.4 - 25.11.2017
+* Adds DefaultConsulUriString and DefaultConsulUri
+
 #### 0.1.3 - 31.10.2017
 * Fixes deleting of all uses - ops
 
