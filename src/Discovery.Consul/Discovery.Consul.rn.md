@@ -1,3 +1,6 @@
+#### 0.1.5 - 25.11.2017
+* Updates packages
+
 #### 0.1.4 - 25.11.2017
 * Adds DefaultConsulUriString and DefaultConsulUri
 
