@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Web.Http;
 using Consul;
 using Discovery.Contracts;
-using Elders.Cronus.DomainModeling;
 
 namespace Discovery.Consul
 {
@@ -24,10 +23,8 @@ namespace Discovery.Consul
             if (string.IsNullOrEmpty(consulNodeIp) == true) throw new ArgumentNullException(nameof(consulNodeIp));
         }
 
-        public void RegisterServices(HttpConfiguration config, Assembly assembly, Uri boundedContextBaseUri)
+        public void RegisterServices(HttpConfiguration config, Assembly assembly, string boundedContext, Uri boundedContextBaseUri)
         {
-            var boundedContextName = assembly.GetBoundedContext().BoundedContextName;
-
             var methodsWithDiscoverableAttribute = assembly.GetTypes()
               .SelectMany(t => t.GetMethods())
               .Where(m => m.GetCustomAttributes(typeof(DiscoverableAttribute), false).Length > 0)
@@ -39,7 +36,7 @@ namespace Discovery.Consul
                 var method = methodWithDiscoverableAttribute.Method;
                 var attr = methodWithDiscoverableAttribute.Attr;
 
-                var endpoint = new DiscoverableEndpoint(attr.EndpointName, new Uri(boundedContextBaseUri, GetUrl(config, method)), boundedContextName, new DiscoveryVersion(attr.Version, attr.DepricateVersion));
+                var endpoint = new DiscoverableEndpoint(attr.EndpointName, new Uri(boundedContextBaseUri, GetUrl(config, method)), boundedContext, new DiscoveryVersion(attr.Version, attr.DepricateVersion));
                 AppendToConsul(endpoint);
             }
         }

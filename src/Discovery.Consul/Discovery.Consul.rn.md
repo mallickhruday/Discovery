@@ -1,3 +1,6 @@
+#### 0.2.0 - 12.04.2018
+* Adds net45 support
+
 #### 0.1.6 - 25.11.2017
 * Updates packages
 
