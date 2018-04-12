@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery", "Discovery\Discovery.csproj", "{843A8344-3784-49D5-B4C7-F213DB6D71BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery.Consul", "Discovery.Consul\Discovery.Consul.csproj", "{F8AA66C6-FF26-4E52-BD5A-6E4DC92A7D10}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4C7B2111-5578-46B6-9955-66A8D7358F5F}"
-	ProjectSection(SolutionItems) = preProject
-		Discovery.Consul\Discovery.Consul.rn.md = Discovery.Consul\Discovery.Consul.rn.md
-		Discovery\Discovery.rn.md = Discovery\Discovery.rn.md
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C99271AB-B669-4166-8391-E72F01C31DE5}
 	EndGlobalSection
 EndGlobal

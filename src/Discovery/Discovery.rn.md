@@ -1,3 +1,6 @@
+#### 0.2.0 - 12.04.2018
+* Adds net45/netstandard20 support
+
 #### 0.1.2 - 25.11.2017
 * Adds private parameterless counstructors
 
