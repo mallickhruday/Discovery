@@ -57,9 +57,12 @@ namespace Discovery.Consul
 
             foreach (var service in services.Response)
             {
-                var parsed = ConsulHelper.Parse(service.Value.Tags);
-                if (parsed.ContainsKey(ConsulHelper.BoundedContext) == true && parsed[ConsulHelper.BoundedContext] == boundedContext)
-                    client.Agent.ServiceDeregister(service.Key);
+                if (service.Value != null && service.Value.Tags != null)
+                {
+                    var parsed = ConsulHelper.Parse(service.Value.Tags);
+                    if (parsed.ContainsKey(ConsulHelper.BoundedContext) == true && parsed[ConsulHelper.BoundedContext] == boundedContext)
+                        client.Agent.ServiceDeregister(service.Key);
+                }
             }
         }
 

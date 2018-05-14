@@ -1,3 +1,6 @@
+#### 0.2.1 - 14.05.2018
+* Fixes a bug with consul tags
+
 #### 0.2.0 - 12.04.2018
 * Adds net45 support
 
