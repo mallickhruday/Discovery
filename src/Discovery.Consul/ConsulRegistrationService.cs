@@ -91,28 +91,57 @@ namespace Discovery.Consul
                 check = DefaultCheck(httpCheckUri);
 
             AppendToConsul(id, name, tags, check);
+
+        }
+
+        private bool IsNewOrUpdatedService(string id, string name, string[] tags)
+        {
+            bool areIdentical = false;
+            var response = client.Catalog.Service(id).Result;
+            if (ReferenceEquals(null, response) == false && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var currentService = response.Response.SingleOrDefault();
+                if (ReferenceEquals(null, currentService) == false)
+                {
+                    areIdentical =
+                        currentService.ServiceID.Equals(id, StringComparison.OrdinalIgnoreCase) &&
+                        currentService.ServiceName.Equals(name, StringComparison.OrdinalIgnoreCase);
+
+                    foreach (var tag in currentService.ServiceTags)
+                    {
+                        if (tag.StartsWith(ConsulHelper.UpdatedAt)) continue;
+                        areIdentical &= tags.Contains(tag);
+                    }
+                }
+            }
+
+            return areIdentical == false;
         }
 
         void AppendToConsul(string id, string name, string[] tags, AgentServiceCheck check = null)
         {
-            check = null; // Removes all health checks for now... too much noise
-            var registration = new AgentServiceRegistration()
+            bool isNewOrUpdatedService = IsNewOrUpdatedService(id, name, tags);
+            if (isNewOrUpdatedService)
             {
-                ID = id,
-                Name = name,
-                Address = consulNodeIp,
-                Tags = tags,
-                Check = check
-            };
+                check = null; // Removes all health checks for now... too much noise
+                var registration = new AgentServiceRegistration()
+                {
+                    ID = id,
+                    Name = name,
+                    Address = consulNodeIp,
+                    Tags = tags,
+                    Check = check
+                };
 
-            // this will clean old registrations
-            var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;
-            var register = client.Agent.ServiceRegister(registration).Result;
-            //var result = client.Catalog.Services().Result;
-            //foreach (var item in result.Response)
-            //{
-            //    client.Agent.ServiceDeregister(item.Key);
-            //}
+                // this will clean old registrations
+                var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;
+                var register = client.Agent.ServiceRegister(registration).Result;
+                //var result = client.Catalog.Services().Result;
+                //foreach (var item in result.Response)
+                //{
+                //    client.Agent.ServiceDeregister(item.Key);
+                //}
+            }
         }
 
         string GetCurrentNodeIp()
