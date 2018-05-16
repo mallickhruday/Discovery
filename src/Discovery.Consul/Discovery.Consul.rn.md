@@ -1,3 +1,6 @@
+#### 0.2.3 - 16.05.2018
+* Fixes a bug where a service is updated when no changes are done. This was happening when the host is restarted and all the services were de/registered every time
+
 #### 0.2.2 - 15.05.2018
 * Fixes a bug where a service is updated when no changes are done. This was happening when the host is restarted and all the services were de/registered every time
 

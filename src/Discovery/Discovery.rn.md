@@ -1,3 +1,6 @@
+#### 0.2.3 - 16.05.2018
+* No idea. VS said => Unable to resolve dependencies. 'Discovery 0.2.0' is not compatible with 'Discovery.Consul 0.2.1 constraint: Discovery (>= 0.2.1)'.
+
 #### 0.2.2 - 15.05.2018
 * No idea. VS said => Unable to resolve dependencies. 'Discovery 0.2.0' is not compatible with 'Discovery.Consul 0.2.1 constraint: Discovery (>= 0.2.1)'.
 

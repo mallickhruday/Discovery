@@ -96,26 +96,32 @@ namespace Discovery.Consul
 
         private bool IsNewOrUpdatedService(string id, string name, string[] tags)
         {
-            bool areIdentical = false;
             var response = client.Catalog.Service(id).Result;
             if (ReferenceEquals(null, response) == false && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var currentService = response.Response.SingleOrDefault();
-                if (ReferenceEquals(null, currentService) == false)
+                CatalogService[] currentServices = response.Response;
+                if (ReferenceEquals(null, currentServices) == false)
                 {
-                    areIdentical =
-                        currentService.ServiceID.Equals(id, StringComparison.OrdinalIgnoreCase) &&
-                        currentService.ServiceName.Equals(name, StringComparison.OrdinalIgnoreCase);
-
-                    foreach (var tag in currentService.ServiceTags)
+                    foreach (var currentService in currentServices)
                     {
-                        if (tag.StartsWith(ConsulHelper.UpdatedAt)) continue;
-                        areIdentical &= tags.Contains(tag);
+                        bool hasIdenticalIdAndName = currentService.ServiceID.Equals(id, StringComparison.OrdinalIgnoreCase) && currentService.ServiceName.Equals(name, StringComparison.OrdinalIgnoreCase);
+                        if (hasIdenticalIdAndName == false)
+                            continue;
+
+                        bool hasIdenticalTags = true;
+                        foreach (var tag in currentService.ServiceTags)
+                        {
+                            if (tag.StartsWith(ConsulHelper.UpdatedAt)) continue;
+                            hasIdenticalTags &= tags.Contains(tag);
+                        }
+
+                        if (hasIdenticalTags)
+                            return false;
                     }
                 }
             }
 
-            return areIdentical == false;
+            return true;
         }
 
         void AppendToConsul(string id, string name, string[] tags, AgentServiceCheck check = null)
