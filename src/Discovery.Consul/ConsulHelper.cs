@@ -5,9 +5,6 @@ namespace Discovery.Consul
 {
     public static class ConsulHelper
     {
-        [Obsolete("Use DefaultConsulUriString or DefaultConsulUri(). This will be removed")]
-        public static Uri ConsulUri { get { return new Uri(DefaultConsulUriString); } }
-
         public const string DefaultConsulUriString = "http://consul.local.com:8500";
         public const string Visability = "Visability";
         public const string BoundedContext = "BoundedContext";
@@ -32,7 +29,7 @@ namespace Discovery.Consul
             return false;
         }
 
-        public static Dictionary<string, string> Parse(string[] tags)
+        public static IDictionary<string, string> Parse(string[] tags)
         {
             var parsed = new Dictionary<string, string>();
             foreach (var tag in tags)

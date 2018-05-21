@@ -9,10 +9,10 @@ namespace Discovery.Contracts
             Endpoints = new List<DiscoverableEndpoint>();
         }
 
-        public DiscoveryReaderResponseModel(long updatedAt, IList<DiscoverableEndpoint> endpoints)
+        public DiscoveryReaderResponseModel(long updatedAt, IEnumerable<DiscoverableEndpoint> endpoints)
         {
             UpdatedAt = updatedAt;
-            Endpoints = new List<DiscoverableEndpoint>(endpoints);
+            Endpoints = new HashSet<DiscoverableEndpoint>(endpoints);
         }
 
         /// <summary>
@@ -20,6 +20,6 @@ namespace Discovery.Contracts
         /// </summary>
         public long UpdatedAt { get; private set; }
 
-        public IList<DiscoverableEndpoint> Endpoints { get; private set; }
+        public IEnumerable<DiscoverableEndpoint> Endpoints { get; private set; }
     }
 }

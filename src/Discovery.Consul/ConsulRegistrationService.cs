@@ -48,7 +48,16 @@ namespace Discovery.Consul
 
         public void RegisterService(string serviceName, Uri httpCheckUri)
         {
-            AppendToConsul(serviceName, serviceName, null, DefaultCheck(httpCheckUri));
+            var registration = new AgentServiceRegistration()
+            {
+                ID = serviceName,
+                Name = serviceName,
+                Address = consulNodeIp,
+                Check = DefaultCheck(httpCheckUri)
+            };
+
+            var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;
+            var register = client.Agent.ServiceRegister(registration).Result;
         }
 
         public void UnRegisterServices(string boundedContext)
@@ -82,8 +91,8 @@ namespace Discovery.Consul
             var endpointNameTag = $"{ConsulHelper.EndpointName}{ConsulHelper.Separator}{endpoint.Name}";
             var endpointUrlTag = $"{ConsulHelper.EndpointUrl}{ConsulHelper.Separator}{endpoint.Url}";
 
-            var id = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}";
-            var name = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}";
+            var id = endpoint.FullName;
+            var name = endpoint.FullName;
             var tags = new[] { bcTag, introducedAtVersionTag, depricatedAtVersionTag, endpointUrlTag, endpointNameTag, timeTag, publicTag };
 
             AgentServiceCheck check = null;
@@ -94,9 +103,9 @@ namespace Discovery.Consul
 
         }
 
-        private bool IsNewOrUpdatedService(string id, string name, string[] tags)
+        private bool IsNewOrUpdatedService(DiscoverableEndpoint newEndpoint)
         {
-            var response = client.Catalog.Service(id).Result;
+            var response = client.Catalog.Service(newEndpoint.FullName).Result;
             if (ReferenceEquals(null, response) == false && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 CatalogService[] currentServices = response.Response;
@@ -104,29 +113,20 @@ namespace Discovery.Consul
                 {
                     foreach (var currentService in currentServices)
                     {
-                        bool hasIdenticalIdAndName = currentService.ServiceID.Equals(id, StringComparison.OrdinalIgnoreCase) && currentService.ServiceName.Equals(name, StringComparison.OrdinalIgnoreCase);
-                        if (hasIdenticalIdAndName == false)
-                            continue;
-
-                        bool hasIdenticalTags = true;
-                        foreach (var tag in currentService.ServiceTags)
-                        {
-                            if (tag.StartsWith(ConsulHelper.UpdatedAt)) continue;
-                            hasIdenticalTags &= tags.Contains(tag);
-                        }
-
-                        if (hasIdenticalTags)
-                            return false;
+                        DiscoverableEndpoint endpointInConsul = currentService.ServiceTags.ConvertConsulTagsToDiscoveryEndpoint();
+                        if (newEndpoint.Equals(endpointInConsul) == false)
+                            return true;
                     }
                 }
             }
 
-            return true;
+            return false;
         }
 
         void AppendToConsul(string id, string name, string[] tags, AgentServiceCheck check = null)
         {
-            bool isNewOrUpdatedService = IsNewOrUpdatedService(id, name, tags);
+            DiscoverableEndpoint newEndpoint = tags.ConvertConsulTagsToDiscoveryEndpoint();
+            bool isNewOrUpdatedService = IsNewOrUpdatedService(newEndpoint);
             if (isNewOrUpdatedService)
             {
                 check = null; // Removes all health checks for now... too much noise
