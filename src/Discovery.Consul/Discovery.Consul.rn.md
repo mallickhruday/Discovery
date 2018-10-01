@@ -1,3 +1,6 @@
+#### 1.0.0-beta0001 - 01.10.2018
+* Removes ASP net dependency
+
 #### 0.2.4 - 21.05.2018
 * Properly calculates UpdatedAt field when getting all services
 
