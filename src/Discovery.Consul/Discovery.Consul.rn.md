@@ -1,5 +1,5 @@
 #### 1.0.0-beta0002 - 01.10.2018
-* Adds async versions of the Consul Get methods
+* Adds async versions of the Consul Get methods.
 
 #### 1.0.0-beta0001 - 01.10.2018
 * Removes ASP net dependency
