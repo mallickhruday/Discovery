@@ -1,3 +1,6 @@
+#### 1.0.0-beta0001 - 01.10.2018
+* Removes ASP net dependency
+
 #### 0.2.4 - 16.05.2018
 * Better encapsulation and object oriented code
 
