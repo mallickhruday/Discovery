@@ -1,3 +1,6 @@
+#### 1.0.0-beta0003 - 02.10.2018
+* Stops hiding the async methods
+
 #### 1.0.0-beta0002 - 01.10.2018
 * Adds async versions of the Consul Get methods.
 
