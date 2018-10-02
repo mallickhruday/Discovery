@@ -115,21 +115,21 @@ namespace Elders.Discovery.Consul
 
         }
 
-        private bool IsNewOrUpdatedService(DiscoverableEndpoint newEndpoint)
+        private async Task<bool> IsNewOrUpdatedServiceAsync(DiscoverableEndpoint newEndpoint)
         {
-            var response = client.Catalog.Service(newEndpoint.FullName).Result;
-            if (ReferenceEquals(null, response) == false && response.StatusCode == System.Net.HttpStatusCode.OK)
+            var result = await client.Catalog.Service(newEndpoint.FullName).ConfigureAwait(false);
+
+            if (result is null) return false;
+            if (result.StatusCode != System.Net.HttpStatusCode.OK) return false;
+
+            CatalogService[] currentServices = result.Response;
+            if (currentServices is null || currentServices.Length == 0) return true;
+
+            foreach (var currentService in currentServices)
             {
-                CatalogService[] currentServices = response.Response;
-                if (ReferenceEquals(null, currentServices) == false)
-                {
-                    foreach (var currentService in currentServices)
-                    {
-                        DiscoverableEndpoint endpointInConsul = currentService.ServiceTags.ConvertConsulTagsToDiscoveryEndpoint();
-                        if (newEndpoint.Equals(endpointInConsul) == false)
-                            return true;
-                    }
-                }
+                DiscoverableEndpoint endpointInConsul = currentService.ServiceTags.ConvertConsulTagsToDiscoveryEndpoint();
+                if (newEndpoint.Equals(endpointInConsul) == false)
+                    return true;
             }
 
             return false;
@@ -138,7 +138,7 @@ namespace Elders.Discovery.Consul
         private async Task AppendToConsulAsync(string id, string name, string[] tags, AgentServiceCheck check = null)
         {
             DiscoverableEndpoint newEndpoint = tags.ConvertConsulTagsToDiscoveryEndpoint();
-            bool isNewOrUpdatedService = IsNewOrUpdatedService(newEndpoint);
+            bool isNewOrUpdatedService = await IsNewOrUpdatedServiceAsync(newEndpoint).ConfigureAwait(false);
             if (isNewOrUpdatedService)
             {
                 check = null; // Removes all health checks for now... too much noise
