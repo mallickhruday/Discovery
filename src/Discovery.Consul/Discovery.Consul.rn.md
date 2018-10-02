@@ -1,3 +1,6 @@
+#### 1.0.0-beta0004 - 02.10.2018
+* Fixes a bug when chacking for service changes
+
 #### 1.0.0-beta0003 - 02.10.2018
 * Stops hiding the async methods
 
