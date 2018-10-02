@@ -1,3 +1,6 @@
+#### 1.0.0-beta0004 - 02.10.2018
+* Bump
+
 #### 1.0.0-beta0003 - 02.10.2018
 * Adds IEndpointDiscovery interface
 
